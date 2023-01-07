@@ -1,5 +1,5 @@
 var customPrintJson = {
-    "panels": [{
+    /*"panels": [{
         "index": 0,
         "height": 297,
         "width": 210,
@@ -477,5 +477,5 @@ var customPrintJson = {
         }],
         "paperNumberLeft": 565.5,
         "paperNumberTop": 819
-    }]
+    }]*/
 }

@@ -29,7 +29,17 @@
                     <a class="btn hiprint-toolbar-item " style="color: #fff;
         background-color: #d9534f;
         border-color: #d43f3a;" id="A4_preview">快速预览</a>
+                    <a class="btn hiprint-toolbar-item " style="color: #fff;
+        background-color: #d9534f;
+        border-color: #d43f3a;" id="A4_toPdf">保存为pdf</a>
                     <a id="A4_directPrint" class="btn hiprint-toolbar-item " style="color: #fff;background-color: #d9534f;border-color: #d43f3a;">打印</a>
+
+                <div class="hiprint-printPagination">
+                    <ul class="hiprint-pagination">
+                        <li><span>1</span><a href="javascript:void(0);">x</a></li>
+                        <li><span>+</span></li>
+                    </ul>
+                </div>
             </div>
             <form id="formArea">
                 <input type="hidden" name="canvasStr" value='${template.canvasStr}'>
@@ -76,14 +86,6 @@
                                         <span class="glyphicon-class">表格</span>
                                     </a>
                                 </li>
-
-                                <!--                                                <li>-->
-                                <!--                                                    <a class="ep-draggable-item" tid="testModule.html">-->
-                                <!--                                                        <span class="glyphicon glyphicon-header" aria-hidden="true"></span>-->
-                                <!--                                                        <span class="glyphicon-class">html</span>-->
-                                <!--                                                    </a>-->
-                                <!--                                                </li>-->
-
                             </ul>
                         </li>
                         <li>
@@ -101,18 +103,6 @@
                                     <a class="ep-draggable-item" tid="testModule.vline" style="">
                                         <span class="glyphicon glyphicon-resize-vertical" aria-hidden="true"></span>
                                         <span class="glyphicon-class">竖线</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="ep-draggable-item" tid="testModule.rect">
-                                        <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
-                                        <span class="glyphicon-class">矩形</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="ep-draggable-item" tid="testModule.oval">
-                                        <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
-                                        <span class="glyphicon-class">椭圆</span>
                                     </a>
                                 </li>
                             </ul>
@@ -148,7 +138,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <button type="button" class="btn btn-danger" id="A4_printByHtml">打印</button>
+<!--                    <button type="button" class="btn btn-danger" id="A4_printByHtml">打印</button>-->
                     <div class="prevViewDiv"></div>
                 </div>
                 <div class="modal-footer">
@@ -171,6 +161,10 @@
     <script src="hiprint.bundle.js"></script>
     <script src="plugins/jquery.hiwprint.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script src="plugins/jspdf/canvas2image.js"></script>
+    <script src="plugins/jspdf/canvg.min.js"></script>
+    <script src="plugins/jspdf/html2canvas.min.js"></script>
+    <script src="plugins/jspdf/jspdf.min.js"></script>
 
     <script>
         var hiprintTemplate;
@@ -185,6 +179,7 @@
             //设置左侧拖拽事件
             hiprint.PrintElementTypeManager.buildByHtml($('.ep-draggable-item'));
 
+            <!-- 创建打印模板对象-->
             hiprintTemplate = new hiprint.PrintTemplate({
                 template: customPrintJson,
                 settingContainer: '#PrintElementOptionSetting',
@@ -197,12 +192,15 @@
                 $('#myModal .modal-body .prevViewDiv').html(hiprintTemplate.getHtml(printData))
                 $('#myModal').modal('show')
             });
+            $('#A4_toPdf').click(function () {
+                hiprintTemplate.toPdf(printData,"pdf文件");
+            });
             $('#A4_directPrint').click(function () {
                 hiprintTemplate.print(printData);
             });
-            $('#A4_printByHtml').click(function () {
-                hiprintTemplate.printByHtml($('#myModal .modal-body .prevViewDiv'));
-            })
+            // $('#A4_printByHtml').click(function () {
+            //     hiprintTemplate.printByHtml($('#myModal .modal-body .prevViewDiv'));
+            // })
             $('#A4_getJson_toTextarea').click(function () {
                 $('#A4_textarea_json').html(JSON.stringify(hiprintTemplate.getJson()))
             })
@@ -210,11 +208,6 @@
                 $('#A4_textarea_html').val(hiprintTemplate.getHtml(printData)[0].outerHTML)
             })
         });
-
-        //调整纸张
-        var setPaper = function (paperTypeOrWidth, height) {
-            hiprintTemplate.setPaper(paperTypeOrWidth, height);
-        }
 
         //旋转
         var rotatePaper = function () {
@@ -224,49 +217,6 @@
             hiprintTemplate.clear();
         }
 
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            //设置左侧拖拽事件
-            var hiprintTemplate_bill = new hiprint.PrintTemplate({
-                template: JSON.parse($('#textarea_bill').val()),
-                settingContainer: '#PrintElementOptionSetting'
-            });
-            //打印设计
-            hiprintTemplate_bill.design('#hiprint-printTemplate_bill');
-
-            $('#bill_preview').click(function () {
-                $('#myModal .modal-body .prevViewDiv').html(hiprintTemplate_bill.getHtml(printData))
-                $('#myModal').modal('show')
-            });
-            $('#bill_print').click(function () {
-                hiprintTemplate_bill.print(printData);
-            });
-        });
-
-
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#barcode_button_preview').click(function () {
-                var barCodehiprintTemplate = new hiprint.PrintTemplate({ template: JSON.parse($('#textarea_barcode').val()) });
-
-                var $html = barCodehiprintTemplate.getHtml([{ name: '黄山', barcode: '13234567' }, { name: '黄波', barcode: '1224567' }, { name: '黄磊', barcode: '1234567' }, { name: '黄磊', barcode: '1234567' }, { name: '古丽娜', barcode: '7654321' }])
-
-                $('#myModal .modal-body .prevViewDiv').html($html)
-                $('#myModal').modal('show')
-            });
-
-            $('#barcode_button_print').click(function () {
-                var barCodehiprintTemplate = new hiprint.PrintTemplate({ template: JSON.parse($('#textarea_barcode').val()) });
-
-                var $html = barCodehiprintTemplate.getHtml([{ name: '黄山', barcode: '13234567' }, { name: '黄波', barcode: '1224567' }, { name: '黄磊', barcode: '1234567' }, { name: '黄磊', barcode: '1234567' }, { name: '古丽娜', barcode: '7654321' }])
-                barCodehiprintTemplate.printByHtml($html);
-
-            });
-        })
     </script>
 
 </body>
