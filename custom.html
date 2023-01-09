@@ -185,6 +185,8 @@
                 settingContainer: '#PrintElementOptionSetting',
                 paginationContainer: '.hiprint-printPagination'
             });
+            // 自定义字段
+            hiprintTemplate.setFields([{field:'name',text:'姓名'}]);
             //打印设计
             hiprintTemplate.design('#hiprint-printTemplate');
 
@@ -201,12 +203,12 @@
             // $('#A4_printByHtml').click(function () {
             //     hiprintTemplate.printByHtml($('#myModal .modal-body .prevViewDiv'));
             // })
-            $('#A4_getJson_toTextarea').click(function () {
-                $('#A4_textarea_json').html(JSON.stringify(hiprintTemplate.getJson()))
-            })
-            $('#A4_getHtml_toTextarea').click(function () {
-                $('#A4_textarea_html').val(hiprintTemplate.getHtml(printData)[0].outerHTML)
-            })
+            // $('#A4_getJson_toTextarea').click(function () {
+            //     console.log(JSON.stringify(hiprintTemplate.getJson()))
+            // })
+            // $('#A4_getHtml_toTextarea').click(function () {
+            //     $('#A4_textarea_html').val(hiprintTemplate.getHtml(printData)[0].outerHTML)
+            // })
         });
 
         //旋转
