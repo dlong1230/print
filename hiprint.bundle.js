@@ -263,7 +263,7 @@ var hiprint = function (t) {
                         }, {
                             name: "field", hidden: !1
                         }, {
-                            name: "testData", hidden: !1
+                            name: "testData", hidden: !0
                         }, {
                             name: "dataType", hidden: !1
                         }, {
@@ -364,7 +364,7 @@ var hiprint = function (t) {
                         }, {
                             name: "field", hidden: !1
                         }, {
-                            name: "testData", hidden: !1
+                            name: "testData", hidden: !0
                         }, {
                             name: "fontFamily", hidden: !1
                         }, {
@@ -2025,7 +2025,7 @@ var hiprint = function (t) {
                 }
         
                 return t.prototype.createTarget = function () {
-                    return this.target = $(' <div class="hiprint-option-item hiprint-option-item-row"  style="display: none">\n        <div class="hiprint-option-item-label">\n        测试数据\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="仅字段名称存在时有效" class="auto-submit" >\n        </div>\n    </div>'), this.target;
+                    return this.target = $(' <div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        测试数据\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="仅字段名称存在时有效" class="auto-submit" >\n        </div>\n    </div>'), this.target;
                 }, t.prototype.getValue = function () {
                     var t = this.target.find("input").val();
                     if (t) return t.toString();
@@ -5497,19 +5497,12 @@ function (t, e, n) {
                 }, e.prototype.getData = function (t) {
                     var e = void 0;
         
-                    if (e = t ? t[this.getField()] || "" : this.options.testData || this.printElementType.getData() || "", this.options.format) {
-                        if ("datetime" == this.options.dataType) return o.a.dateFormat(e, this.options.format);
-        
-                        if ("boolen" == this.options.dataType) {
-                            var n = this.options.format.split(":");
-                            if (n.length > 0) return !0 === e || "true" === e ? n[0] : n[1];
-                        }
-                    }
+                    e = t ? t[this.getField()] || "" : this.options.testData || this.printElementType.getData() || "", this.options.format;
         
                     return e;
                 }, e.prototype.updateTargetText = function (t, e, n, i) {
                     var r = this.getFormatter(), a = t.find(".hiprint-printElement-text-content"), p = "";
-                    p = this.getField() ? (this.options.getHideTitle() ? "" : e ? e + "：" : "") + (r ? r(e, n, this.options, this._currenttemplateData, t) : n) : n = r ? r(e, e, this.options, this._currenttemplateData, t) : e;
+                    p = this.getField() ? (e ? e + "：" : "") + (n ? n :"动态文本"): n = e ? e : e = "默认文本";
                     var s = this.options.getTextType();
                     if ("text" == s) a.html(p);
                 }, e.prototype.onResize = function (e, n, i, o, r) {

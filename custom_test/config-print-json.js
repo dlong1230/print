@@ -1,4 +1,5 @@
-﻿var configPrintJson = {
+﻿/*
+var configPrintJson = {
     "panels": [{
         "index": 0,
         "height": 297,
@@ -141,4 +142,4 @@
         "paperNumberLeft": 565,
         "paperNumberTop": 819
     }]
-}
+}*/

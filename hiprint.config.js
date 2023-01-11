@@ -22,6 +22,7 @@
                 {
                     name: 'testData',
                     hidden: false
+
                 },
                 {
                     name: 'dataType',
